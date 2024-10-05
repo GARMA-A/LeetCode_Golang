@@ -1,6 +1,11 @@
 package main
 
-// import "fmt"
+import (
+	 ."fmt"
+	"slices"
+	"strings"
+	"unicode"
+)
 
 func isValidSudoku(board [][]byte) bool {
 	type tuple struct{ r, c int }
@@ -56,10 +61,43 @@ func productExceptSelf(nums []int) []int{
 	
 }
 
+
+func rtrn() (int , string) {
+
+	return 5 , "hello"
+}
+
+
+func isPalindrome(s string) bool {
+
+	s1 := strings.ToLower(s)
+
+	var cleand1 []rune
+
+	for _,ch := range s1 {
+		if unicode.IsLetter(ch) || unicode.IsDigit(ch) {
+			cleand1 = append(cleand1, ch)
+		}
+	}
+
+	s1 = string(cleand1)
+
+	slices.Reverse(cleand1)
+
+	s2 := string(cleand1)
+
+	return s1 == s2
+}
+
 func main() {
+     
+s := "A man, a plan, a canal: Panama"
 
-
-
+if isPalindrome(s) {
+	Println("yes")
+} else {
+	Println("No")
+}
 
 }
 
