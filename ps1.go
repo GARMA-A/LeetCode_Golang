@@ -1,8 +1,10 @@
 package main
 
 import (
-	 ."fmt"
+	"fmt"
+	"math"
 	"slices"
+	"sort"
 	"strings"
 	"unicode"
 )
@@ -62,42 +64,111 @@ func productExceptSelf(nums []int) []int{
 }
 
 
-func rtrn() (int , string) {
-
-	return 5 , "hello"
-}
-
 
 func isPalindrome(s string) bool {
 
 	s1 := strings.ToLower(s)
-
 	var cleand1 []rune
-
 	for _,ch := range s1 {
 		if unicode.IsLetter(ch) || unicode.IsDigit(ch) {
 			cleand1 = append(cleand1, ch)
 		}
 	}
-
 	s1 = string(cleand1)
-
 	slices.Reverse(cleand1)
-
 	s2 := string(cleand1)
-
 	return s1 == s2
 }
 
-func main() {
-     
-s := "A man, a plan, a canal: Panama"
+func isPalindrome2(s string) bool {
+	l, r := 0, len(s)-1
+	for l < r {
+		startPass := unicode.IsLetter(rune(s[l])) || unicode.IsDigit(rune(s[l]))
+		endPass := unicode.IsLetter(rune(s[r])) || unicode.IsDigit(rune(s[r]))
 
-if isPalindrome(s) {
-	Println("yes")
-} else {
-	Println("No")
+		if !startPass {
+			l++
+		} else if !endPass {
+			r--
+		} else {
+			if unicode.ToLower(rune(s[l])) != unicode.ToLower(rune(s[r])) {
+				return false
+			}
+			l++
+			r--
+		}
+	}
+	return true
 }
+
+func topKFrequent( nums []int , k int) []int {
+
+	mp := make(map[int]int)
+	for _,el := range nums {
+        mp[el]++      
+	}
+	type kv struct{num int ; freq int}     
+       var sl  = []kv{}
+	for num,freq := range mp {
+		sl = append(sl, kv{num:num , freq:freq})
+	}
+	sort.Slice(sl , func(i,j int) bool { return sl[i].freq > sl[j].freq})
+	var res  = make([]int,0,k)
+	for i :=0 ; i<k ; i++ {
+		res =append(res, sl[i].num) 
+	}
+	return res
+} 
+
+func search(nums []int, target int) int {
+
+    for l , r := 0 , len(nums) -1 ; l<=r ;{
+        var mid = l+(r-l) /2
+        if nums[mid] == target {
+            return mid
+        } else if nums[mid] > target {
+            r = mid-1
+        } else {l = mid + 1}
+    }
+    return -1
+    
+}
+
+func minEatingSpeed(piles []int , h int) int {
+	var l , r , res int = 1 , 1e9+1 , 0
+	for l<=r{
+		mid := l+(r-l) / 2
+		if canEat(piles , h , mid) {
+                 res = mid
+		   r = mid-1 
+		} else {
+			l = mid + 1
+		}
+	}
+	return res
+
+} 
+
+
+
+func canEat(p []int,h,k int) bool {
+      
+	 for _,el := range p {
+		h-= int(math.Ceil(float64(el) / float64(k)))
+	 }
+	return h>=0
+
+
+}
+
+
+
+}
+
+
+func main() {
+
+fmt.Print(maxProfit([]int{7,6,4,3,1}))
 
 }
 
