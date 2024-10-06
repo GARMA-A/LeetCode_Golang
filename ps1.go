@@ -162,6 +162,38 @@ func canEat(p []int,h,k int) bool {
 }
 
 
+func maxProfit(prices []int) int {
+	
+	front , back , mx := 0 , 1, 0
+	for back < len(prices) {
+		if prices[front] > prices[back] {
+			front = back
+		} else {
+                        mx = max(mx , prices[back] - prices[front])
+		}
+		back++
+	}
+	return mx 
+
+}
+
+func maxProfit2(prices []int) int {
+	front , back , count := 0 , 1 , 0 
+       
+	for back < len(prices) {
+		if prices[front] > prices[back] {
+			front = back
+		} else if prices[front] == prices[back] {
+			front++
+		} else {
+			count+= prices[back] - prices[front]
+			front++
+		}
+		back++
+	}
+
+	return count
+
 
 }
 
