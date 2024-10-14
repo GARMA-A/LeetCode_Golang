@@ -42,34 +42,30 @@ func contains(slice []byte, val byte) bool {
 	return false
 }
 
+func productExceptSelf(nums []int) []int {
+	// [1,2,3,4]
+	size := len(nums)
+	res := make([]int, size)
 
-func productExceptSelf(nums []int) []int{
- // [1,2,3,4]
- size := len(nums)
- res := make([]int , size)
+	prefix := 1
+	postfix := 1
+	for i := 0; i < size; i++ {
+		res[i] = prefix
+		prefix *= nums[i]
+	}
+	for j := size - 1; j >= 0; j-- {
+		res[j] *= postfix
+		postfix *= nums[j]
+	}
 
- prefix := 1
- postfix := 1
- for i := 0 ; i<size ; i++ {
-       res[i] =  prefix 
-	prefix*=nums[i]
- }
- for j := size-1 ; j>=0 ; j-- {
-	res[j] *= postfix
-	postfix*=nums[j]
- }
-
- return res
-	
+	return res
 }
-
-
 
 func isPalindrome(s string) bool {
 
 	s1 := strings.ToLower(s)
 	var cleand1 []rune
-	for _,ch := range s1 {
+	for _, ch := range s1 {
 		if unicode.IsLetter(ch) || unicode.IsDigit(ch) {
 			cleand1 = append(cleand1, ch)
 		}
@@ -101,107 +97,134 @@ func isPalindrome2(s string) bool {
 	return true
 }
 
-func topKFrequent( nums []int , k int) []int {
+func topKFrequent(nums []int, k int) []int {
 
 	mp := make(map[int]int)
-	for _,el := range nums {
-        mp[el]++      
+	for _, el := range nums {
+		mp[el]++
 	}
-	type kv struct{num int ; freq int}     
-       var sl  = []kv{}
-	for num,freq := range mp {
-		sl = append(sl, kv{num:num , freq:freq})
+	type kv struct {
+		num  int
+		freq int
 	}
-	sort.Slice(sl , func(i,j int) bool { return sl[i].freq > sl[j].freq})
-	var res  = make([]int,0,k)
-	for i :=0 ; i<k ; i++ {
-		res =append(res, sl[i].num) 
+	var sl = []kv{}
+	for num, freq := range mp {
+		sl = append(sl, kv{num: num, freq: freq})
+	}
+	sort.Slice(sl, func(i, j int) bool { return sl[i].freq > sl[j].freq })
+	var res = make([]int, 0, k)
+	for i := 0; i < k; i++ {
+		res = append(res, sl[i].num)
 	}
 	return res
-} 
+}
 
 func search(nums []int, target int) int {
 
-    for l , r := 0 , len(nums) -1 ; l<=r ;{
-        var mid = l+(r-l) /2
-        if nums[mid] == target {
-            return mid
-        } else if nums[mid] > target {
-            r = mid-1
-        } else {l = mid + 1}
-    }
-    return -1
-    
+	for l, r := 0, len(nums)-1; l <= r; {
+		var mid = l + (r-l)/2
+		if nums[mid] == target {
+			return mid
+		} else if nums[mid] > target {
+			r = mid - 1
+		} else {
+			l = mid + 1
+		}
+	}
+	return -1
+
 }
 
-func minEatingSpeed(piles []int , h int) int {
-	var l , r , res int = 1 , 1e9+1 , 0
-	for l<=r{
-		mid := l+(r-l) / 2
-		if canEat(piles , h , mid) {
-                 res = mid
-		   r = mid-1 
+func minEatingSpeed(piles []int, h int) int {
+	var l, r, res int = 1, 1e9 + 1, 0
+	for l <= r {
+		mid := l + (r-l)/2
+		if canEat(piles, h, mid) {
+			res = mid
+			r = mid - 1
 		} else {
 			l = mid + 1
 		}
 	}
 	return res
-
-} 
-
-
-
-func canEat(p []int,h,k int) bool {
-      
-	 for _,el := range p {
-		h-= int(math.Ceil(float64(el) / float64(k)))
-	 }
-	return h>=0
-
-
 }
 
+func canEat(p []int, h, k int) bool {
+
+	for _, el := range p {
+		h -= int(math.Ceil(float64(el) / float64(k)))
+	}
+	return h >= 0
+}
 
 func maxProfit(prices []int) int {
-	
-	front , back , mx := 0 , 1, 0
+
+	front, back, mx := 0, 1, 0
 	for back < len(prices) {
 		if prices[front] > prices[back] {
 			front = back
 		} else {
-                        mx = max(mx , prices[back] - prices[front])
+			mx = max(mx, prices[back]-prices[front])
 		}
 		back++
 	}
-	return mx 
+	return mx
 
 }
 
 func maxProfit2(prices []int) int {
-	front , back , count := 0 , 1 , 0 
-       
+	front, back, count := 0, 1, 0
+
 	for back < len(prices) {
 		if prices[front] > prices[back] {
 			front = back
 		} else if prices[front] == prices[back] {
 			front++
 		} else {
-			count+= prices[back] - prices[front]
+			count += prices[back] - prices[front]
 			front++
 		}
 		back++
 	}
 
 	return count
-
+}
+func lengthOfLongestSubstring(s string) int {
+	st, ans := 0, 0
+	window := map[byte]int{}
+	for nd, ch := range s {
+		if index, ok := window[byte(ch)]; ok && index >= st {
+			st = index + 1
+		}
+		ans = max(ans, nd-st+1)
+		window[byte(ch)] = nd
+	}
+	return ans
 
 }
 
+// Definition for singly-linked list.
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func reverseList(head *ListNode) *ListNode {
+	var prev, cur *ListNode = nil, head
+
+	for cur != nil {
+		temp := cur.Next
+		cur.Next = prev
+		prev = cur
+		cur = temp
+	}
+	return prev
+
+}
 
 func main() {
 
-fmt.Print(maxProfit([]int{7,6,4,3,1}))
+
+	
 
 }
-
-
