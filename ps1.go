@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"math"
 	"slices"
 	"sort"
@@ -60,6 +60,9 @@ func productExceptSelf(nums []int) []int {
 
 	return res
 }
+
+
+
 
 func isPalindrome(s string) bool {
 
@@ -224,7 +227,8 @@ func reverseList(head *ListNode) *ListNode {
 
 func main() {
 
+	main2()
 
-	
+
 
 }
