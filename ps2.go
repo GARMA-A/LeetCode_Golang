@@ -96,68 +96,91 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	return head.Next
 }
 
-func singleNumber(nums []int) int{
+func singleNumber(nums []int) int {
 	res := 0
-	for _,n := range nums {
-         res ^= n;
+	for _, n := range nums {
+		res ^= n
 	}
 
 	return res
 
 }
 
-
-// valid perentheses problem 
+// valid perentheses problem
 func isValid(s string) bool {
-    stack := []rune{}
+	stack := []rune{}
 
-    for _,c := range s {
-        if c == '[' || c == '{' || c == '(' {
-            stack = append(stack , c)
-        }
-        if c ==']' {
-            if len(stack) == 0 || stack[len(stack)-1] != '[' {
-                return false
-            }
-            stack = stack[:len(stack)-1]
-        }
-         if c ==')' {
-            if len(stack) == 0 || stack[len(stack)-1] != '(' {
-                return false
-            }
-            stack = stack[:len(stack)-1]
-        }
-         if c =='}' {
-            if len(stack) == 0 || stack[len(stack)-1] != '{' {
-                return false
-            }
-            stack = stack[:len(stack)-1]
-        }
-    }
-    return len(stack)==0
+	for _, c := range s {
+		if c == '[' || c == '{' || c == '(' {
+			stack = append(stack, c)
+		}
+		if c == ']' {
+			if len(stack) == 0 || stack[len(stack)-1] != '[' {
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		}
+		if c == ')' {
+			if len(stack) == 0 || stack[len(stack)-1] != '(' {
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		}
+		if c == '}' {
+			if len(stack) == 0 || stack[len(stack)-1] != '{' {
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		}
+	}
+	return len(stack) == 0
 
-    
 }
 
 func findDuplicate(nums []int) int {
-    visit := make(map[int]bool)
-    for _,n := range nums {
-        _,ok:= visit[n]
-        if ok {
-            return n
-        }
-	 visit[n]=true
-    }
-    return -1
-    
+	visit := make(map[int]bool)
+	for _, n := range nums {
+		_, ok := visit[n]
+		if ok {
+			return n
+		}
+		visit[n] = true
+	}
+	return -1
+
 }
 
+func subsets(nums []int) [][]int {
+	var ans = [][]int{}
+	var temp []int
+	var helper func(int)
 
+	helper = func(j int) {
+		if j == len(nums) {
+			ans = append(ans, temp[:])
+			return
+		}
+		temp = append(temp, nums[j])
+		helper(j + 1)
+		temp = temp[:len(temp)-1]
+		helper(j + 1)
 
+	}
+	helper(0)
+
+	return ans
+
+}
+
+// func arg(args ...int) {
+// 	for _,num := range args {
+//                fmt.Printf("%d ",num)
+// 		}
+// 		fmt.Printf("\n")
+// 	fmt.Printf("%#v",args)
+// }
 
 func main2() {
-	nums := []int{4,1,2,3,2}
-
-	fmt.Println(findDuplicate(nums))
-
+	temp := []int{1,2,3,4,5}
+	
 }
