@@ -1,6 +1,13 @@
 package main
 
-import "fmt"
+
+// func arg(args ...int) {
+// 	for _,num := range args {
+//                fmt.Printf("%d ",num)
+// 		}
+// 		fmt.Printf("\n")
+// 	fmt.Printf("%#v",args)
+// }
 
 // Definition for a binary tree node.
 type TreeNode struct {
@@ -169,18 +176,35 @@ func subsets(nums []int) [][]int {
 	helper(0)
 
 	return ans
-
 }
 
-// func arg(args ...int) {
-// 	for _,num := range args {
-//                fmt.Printf("%d ",num)
-// 		}
-// 		fmt.Printf("\n")
-// 	fmt.Printf("%#v",args)
-// }
+func combinationSum(candidates []int, target int) [][]int {
 
-func main2() {
-	temp := []int{1,2,3,4,5}
-	
+	var ans = [][]int{}
+	var temp []int
+	var helper func(i, sum int)
+
+	helper = func(i, sum int) {
+		if sum == target {
+			ans = append(ans, append([]int{}, temp...))
+
+			//another way to so the same thing
+			// sub := make([]int , len(temp))
+			// copy(sub , temp)
+			// ans = append(ans, sub)
+
+			return
+		} else if sum > target || i == len(candidates) {
+			return
+		}
+
+		helper(i+1, sum)
+		temp = append(temp, candidates[i])
+		helper(i, sum+candidates[i])
+		temp = temp[:len(temp)-1]
+
+	}
+
+	helper(0, 0)
+	return ans
 }
